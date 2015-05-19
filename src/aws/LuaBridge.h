@@ -6,7 +6,7 @@
 #define ASYNCWEBSERVER_LUABRIDGE_H
 
 
-#include "lua5_3/src/lua.hpp"
+#include "lua.hpp"
 
 class LuaBridge {
 
