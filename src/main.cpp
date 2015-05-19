@@ -11,11 +11,7 @@
 #include <ctime>
 #include <iostream>
 #include <boost/asio.hpp>
-#include <dlfcn.h>
 #include "tcp_server.h"
-#include "lua5_3/src/lua.hpp"
-#include "Context.h"
-#include "ServerContext.h"
 
 using boost::asio::ip::tcp;
 
