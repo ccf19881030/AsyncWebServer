@@ -19,43 +19,21 @@ namespace aws {
     public:
         typedef boost::shared_ptr<Connection> pointer;
 
-        static pointer create(boost::asio::io_service& io_service)
-        {
-            return pointer(new Connection(io_service));
-        }
+        static pointer create(boost::asio::io_service& io_service);
 
-        tcp::socket& socket()
+
+        inline tcp::socket& socket()
         {
             return socket_;
         }
 
-        void start()
-        {
-            message_ = make_daytime_string();
-
-            boost::asio::async_write(socket_, boost::asio::buffer(message_),
-                                     boost::bind(&Connection::handle_write, shared_from_this(),
-                                                 boost::asio::placeholders::error,
-                                                 boost::asio::placeholders::bytes_transferred));
-        }
+        void start();
 
     private:
-        Connection(boost::asio::io_service& io_service)
-                : socket_(io_service)
-        {
-        }
+        Connection(boost::asio::io_service& io_service);
 
         void handle_write(const boost::system::error_code& /*error*/,
-                          size_t /*bytes_transferred*/)
-        {
-        }
-
-        std::string make_daytime_string()
-        {
-            using namespace std; // For time_t, time and ctime;
-            time_t now = time(0);
-            return ctime(&now);
-        }
+                          size_t /*bytes_transferred*/);
 
         tcp::socket socket_;
         std::string message_;
