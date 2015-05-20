@@ -10,10 +10,9 @@
 
 #include <ctime>
 #include <iostream>
-#include <boost/asio.hpp>
-#include "tcp_server.h"
-
-using boost::asio::ip::tcp;
+#include "AsyncServerSocket.h"
+#include "ServerContext.h"
+#include "Server.h"
 
 
 int main(int argc, char ** argv)
@@ -22,9 +21,8 @@ int main(int argc, char ** argv)
 
     try
     {
-        boost::asio::io_service io_service;
-        tcp_server server(*sc,io_service);
-        io_service.run();
+        std::cout<<"Server will at port "<<sc->getServerPort()<<"\n";
+        boost::shared_ptr<aws::Server> server(new aws::Server(sc));
     }
     catch (std::exception& e)
     {

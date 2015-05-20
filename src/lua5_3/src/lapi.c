@@ -1239,7 +1239,7 @@ static UpVal **getupvalref (lua_State *L, int fidx, int n, LClosure **pf) {
 LUA_API void *lua_upvalueid (lua_State *L, int fidx, int n) {
   StkId fi = index2addr(L, fidx);
   switch (ttype(fi)) {
-    case LUA_TLCL: {  /* lua5_3 closure */
+    case LUA_TLCL: {  /* lua closure */
       return *getupvalref(L, fidx, n, NULL);
     }
     case LUA_TCCL: {  /* C closure */
