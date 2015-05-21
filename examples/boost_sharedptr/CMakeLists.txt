@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(examples)
+project(AsyncWebServer)
 
 include_directories(/DevRes/Frameworks/boost_1_58_0)
 link_directories(/DevRes/Frameworks/boost_1_58_0/stage/lib)
