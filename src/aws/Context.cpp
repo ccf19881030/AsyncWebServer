@@ -5,14 +5,20 @@
 #include <stdio.h>
 #include "Context.h"
 
-Context::Context() {
-    luaBridge = new LuaBridge();
+
+aws::Context::Context() {
+    luaBridge_ = new LuaBridge(this);
 }
 
-Context::~Context() {
-    delete luaBridge;
+aws::Context::~Context() {
+    delete luaBridge_;
+
 }
 
-LuaBridge *Context::getLuaBridge() {
-    return luaBridge;
+aws::LuaBridge * aws::Context::getLuaBridge() {
+    return luaBridge_;
+}
+
+void aws::Context::exit(int code) {
+    exit(code);
 }

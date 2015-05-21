@@ -6,20 +6,26 @@
 #define ASYNCWEBSERVER_LUABRIDGE_H
 
 
+#include <memory>
 #include "lua.hpp"
 
-class LuaBridge {
+namespace aws {
 
-public:
-    LuaBridge();
-    virtual ~LuaBridge();
+    class Context;
+    class LuaBridge {
 
-public:
-    int getGlobalInt(const char * name);
+    public:
+        LuaBridge(Context * context);
+        virtual ~LuaBridge();
 
-private:
-    lua_State * _luaState;
-};
+    public:
+        int getGlobalInt(const char *name);
+
+    private:
+        lua_State *luaState_;
+        Context * context_;
+    };
+}
 
 
 #endif //ASYNCWEBSERVER_LUABRIDGE_H

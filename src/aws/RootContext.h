@@ -8,11 +8,17 @@
 
 #include "Context.h"
 
-class ServerContext : public Context {
+namespace aws {
 
-public:
-    int getServerPort();
-};
+    class RootContext : public Context {
+
+    public:
+        RootContext();
+
+    public:
+        int getServerPort();
+    };
+}
 
 
 #endif //ASYNCWEBSERVER_APPCONTEXT_H

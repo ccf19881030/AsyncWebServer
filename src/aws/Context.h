@@ -2,25 +2,28 @@
 // Created by plter on 5/19/15.
 //
 
-#ifndef ASYNCWEBSERVER_CONTEXT_H
-#define ASYNCWEBSERVER_CONTEXT_H
+#pragma once
 
-
-#include <boost/smart_ptr/shared_ptr.hpp>
+#include <memory>
+#include <vector>
 #include "LuaBridge.h"
 
-class Context {
+namespace aws {
 
-public:
-    Context();
-    virtual ~Context();
+    class LuaBridge;
+    class RootContext;
+    class Context:public std::enable_shared_from_this<Context>{
 
-public:
-    LuaBridge * getLuaBridge();
+    public:
+        Context();
+        virtual ~Context();
 
-private:
-    LuaBridge * luaBridge;
-};
+    public:
+        LuaBridge * getLuaBridge();
+        void exit(int code);
 
+    private:
+        LuaBridge * luaBridge_;
 
-#endif //ASYNCWEBSERVER_CONTEXT_H
+    };
+}

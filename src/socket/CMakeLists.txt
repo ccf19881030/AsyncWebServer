@@ -9,8 +9,9 @@ link_directories(/DevRes/Frameworks/boost_1_58_0/stage/lib)
 link_libraries(boost_system)
 
 set(SOURCE_FILES
-AsyncServerSocket.cpp
-Connection.cpp
+ServerSocket.cpp
+SocketAcceptor.cpp
+Socket.cpp
 )
 
 add_library(asyncsocket SHARED ${SOURCE_FILES})
