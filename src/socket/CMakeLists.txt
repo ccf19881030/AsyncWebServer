@@ -14,6 +14,8 @@ SocketAcceptor.cpp
 Socket.cpp
 OnServerSocketListener.h
 Data.cpp
+SocketConnectionManager.cpp
+OnSocketListener.h
 )
 
 add_library(asyncsocket SHARED ${SOURCE_FILES})

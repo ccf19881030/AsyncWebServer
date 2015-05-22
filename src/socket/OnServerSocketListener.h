@@ -5,12 +5,15 @@
 #pragma once
 
 #include "Socket.h"
+#include "ServerSocket.h"
 
 namespace aws{
+
+    class ServerSocket;
 
     class OnServerSocketListener{
 
     public:
-        virtual void onAccept(std::shared_ptr<aws::Socket> socket)=0;
+        virtual void onAccept(std::shared_ptr<aws::ServerSocket> server,std::shared_ptr<aws::Socket> socket)=0;
     };
 }

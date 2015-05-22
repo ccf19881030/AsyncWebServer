@@ -14,6 +14,7 @@ namespace aws {
     friend class Socket;
     public:
         Data(std::string & str);
+        virtual ~Data();
         static std::shared_ptr<aws::Data> dataFromString(std::string str);
 
     private:
