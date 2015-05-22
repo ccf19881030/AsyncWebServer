@@ -10,6 +10,8 @@ aws::Socket::~Socket() {
 
 aws::Socket::Socket(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket) {
     asioSocket_ = asioSocket;
+
+
 }
 
 std::shared_ptr<aws::Socket> aws::Socket::create(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_) {
@@ -21,8 +23,7 @@ std::shared_ptr<boost::asio::ip::tcp::socket> aws::Socket::getAsioSocket() {
 }
 
 
-void aws::Socket::async_write(boost::asio::const_buffers_1 buffers,
+void aws::Socket::async_write(std::shared_ptr<aws::Data> data,
                               std::function<void(const boost::system::error_code &code, size_t t)> handler) {
-
-    asioSocket_->async_write_some(buffers,handler);
+    asioSocket_->async_write_some(data->getAsioBuffer(),handler);
 }

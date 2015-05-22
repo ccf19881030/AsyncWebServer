@@ -12,6 +12,8 @@ set(SOURCE_FILES
 ServerSocket.cpp
 SocketAcceptor.cpp
 Socket.cpp
+OnServerSocketListener.h
+Data.cpp
 )
 
 add_library(asyncsocket SHARED ${SOURCE_FILES})

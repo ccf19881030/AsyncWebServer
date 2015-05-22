@@ -10,8 +10,6 @@
 
 aws::ServerSocket::ServerSocket(int port):acceptor_(ioservice_,tcp::endpoint(tcp::v4(),port)) {
     start_accept();
-
-    ioservice_.run();
 }
 
 aws::ServerSocket::~ServerSocket() {
@@ -24,18 +22,19 @@ void aws::ServerSocket::start_accept() {
     acceptor_.async_accept(*socket_,[this,socket_](const boost::system::error_code& error){
 
         if (!error) {
-            onAccept(Socket::create(socket_));
+            onAccept(aws::Socket::create(socket_));
         }
 
         start_accept();
     });
+}
 
+void aws::ServerSocket::start() {
+    ioservice_.run();
 }
 
 void aws::ServerSocket::onAccept(std::shared_ptr<aws::Socket> socket) {
-    std::string message_ = "Hello World\n";
-
-    socket->async_write(boost::asio::buffer(message_),[](const boost::system::error_code &code, size_t t){
-        std::cout<<"Write completed\n";
-    });
+    if (onServerSocketListener_) {
+        onServerSocketListener_->onAccept(socket);
+    }
 }

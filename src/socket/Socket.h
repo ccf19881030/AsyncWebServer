@@ -5,6 +5,7 @@
 #pragma once
 
 #include <boost/asio/ip/tcp.hpp>
+#include "Data.h"
 
 namespace aws {
 
@@ -20,7 +21,7 @@ namespace aws {
     public:
         std::shared_ptr<boost::asio::ip::tcp::socket> getAsioSocket();
 
-        void async_write(boost::asio::const_buffers_1 buffers, std::function<void (const boost::system::error_code &code, size_t t)> handler);
+        void async_write(std::shared_ptr<aws::Data> data, std::function<void (const boost::system::error_code &code, size_t t)> handler);
 
     private:
         std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_;
