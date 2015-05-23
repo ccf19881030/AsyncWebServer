@@ -1,24 +1,34 @@
 //
-// Created by plter on 5/20/15.
+// Created by plter on 5/23/15.
 //
 
-#ifndef PROJECT_SERVER_H
-#define PROJECT_SERVER_H
+#ifndef PROJECT_APPLICATION_H
+#define PROJECT_APPLICATION_H
 
 
-#include "ServerSocket.h"
-#include "RootContext.h"
+#include <socket/ServerSocket.h>
+#include "LuaLoader.h"
 
 namespace aws {
+
     class Server {
+
     public:
-        Server(boost::shared_ptr<RootContext> context);
-        virtual ~Server();
+        Server();
+
+    public:
+        void exit(int code);
+        bool loadConfig(char * config_file_name);
+        int getServerPort();
+        void start();
 
     private:
-        boost::shared_ptr<aws::ServerSocket> asyncServer_;
+        aws::LuaLoader luaLoader_;
+        std::shared_ptr<aws::ServerSocket> serverSocket_;
+        bool config_file_loaded_;
     };
+
+
 }
 
-
-#endif //PROJECT_SERVER_H
+#endif //PROJECT_APPLICATION_H

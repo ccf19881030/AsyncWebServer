@@ -12,14 +12,15 @@
 namespace aws {
 
     class Context;
-    class LuaBridge {
+    class LuaLoader {
 
     public:
-        LuaBridge(Context * context);
-        virtual ~LuaBridge();
+        LuaLoader();
+        virtual ~LuaLoader();
 
     public:
         int getGlobalInt(const char *name);
+        bool loadFile(char * name);
 
     private:
         lua_State *luaState_;

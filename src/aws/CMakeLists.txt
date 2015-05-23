@@ -10,9 +10,7 @@ link_libraries(lua5_3 asyncsocket boost_filesystem)
 
 set(SOURCE_FILES
 main.cpp
-Context.cpp
-LuaBridge.cpp
-RootContext.cpp
+LuaLoader.cpp
 Server.cpp
 )
 

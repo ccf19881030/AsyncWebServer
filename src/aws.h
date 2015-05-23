@@ -6,5 +6,4 @@
 #define PROJECT_AWS_H
 
 
-
 #endif //PROJECT_AWS_H
