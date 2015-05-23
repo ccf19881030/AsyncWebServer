@@ -12,7 +12,7 @@ int main(int argc, char ** argv)
 
     aws::Server server;
     if (!server.loadConfig(argv[1])){
-        std::cerr<<"Fail to load config file "<<argv[1]<<"\n";
+        std::cerr<<"Failed to load config file "<<argv[1]<<"\n";
         return 0;
     }
 
