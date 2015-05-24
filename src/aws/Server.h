@@ -7,6 +7,7 @@
 
 
 #include <socket/ServerSocket.h>
+#include <socket/SocketAcceptor.h>
 #include "LuaLoader.h"
 
 namespace aws {
@@ -24,7 +25,7 @@ namespace aws {
 
     private:
         aws::LuaLoader luaLoader_;
-        std::shared_ptr<aws::ServerSocket> serverSocket_;
+        std::shared_ptr<aws::SocketAcceptor> acceptor_;
         bool config_file_loaded_;
     };
 

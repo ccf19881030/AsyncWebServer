@@ -10,12 +10,12 @@
 #include <boost/asio/buffer.hpp>
 
 namespace aws {
-    class Data{
+    class DataOutput {
     friend class Socket;
     public:
-        Data(std::string & str);
-        virtual ~Data();
-        static std::shared_ptr<aws::Data> dataFromString(std::string str);
+        DataOutput(std::string & str);
+        virtual ~DataOutput();
+        static std::shared_ptr<aws::DataOutput> dataFromString(std::string str);
 
     private:
         boost::asio::const_buffers_1 & getAsioBuffer();

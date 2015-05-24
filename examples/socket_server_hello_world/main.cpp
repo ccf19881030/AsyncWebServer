@@ -29,7 +29,7 @@ int main(){
 void Listener::onAccept(std::shared_ptr<aws::ServerSocket> server, std::shared_ptr<aws::Socket> socket) {
     std::string message_ = "Hello World\n";
 
-    socket->async_write(aws::Data::dataFromString(message_),[socket](const boost::system::error_code &code, size_t t){
+    socket->async_write(aws::DataOutput::dataFromString(message_),[socket](const boost::system::error_code &code, size_t t){
         std::cout<<"Write completed\n";
 
         socket->stop();

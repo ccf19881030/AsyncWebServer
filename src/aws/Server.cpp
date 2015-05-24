@@ -28,8 +28,8 @@ int aws::Server::getServerPort() {
 
 void aws::Server::start() {
     if (config_file_loaded_) {
-        serverSocket_ = aws::ServerSocket::create(getServerPort());
-        serverSocket_->start();
+        acceptor_ = std::make_shared<aws::SocketAcceptor>(getServerPort());
+        acceptor_->start();
     } else{
         std::cerr<<"Please run loadConfig first\n";
     }

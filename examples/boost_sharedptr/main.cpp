@@ -59,7 +59,8 @@ int main(){
 //
 //    std::cout<<"End\n";
 
-    B b;
+//    B b;
+
 
     return 0;
 }

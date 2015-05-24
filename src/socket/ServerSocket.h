@@ -7,7 +7,6 @@
 #include <boost/asio/ip/tcp.hpp>
 #include "boost/asio/io_service.hpp"
 #include "Socket.h"
-#include "OnServerSocketListener.h"
 #include "SocketConnectionManager.h"
 
 using boost::asio::ip::tcp;
@@ -27,12 +26,12 @@ namespace aws {
 
         void start();
 
-        inline void setOnServerSocketListener(std::shared_ptr<aws::OnServerSocketListener> listener){
-            onServerSocketListener_ = listener;
+        inline void setOnAcceptHandler(std::function<void(std::shared_ptr<aws::Socket> socket)> listener){
+            onAcceptHandler_ = listener;
         }
 
-        inline std::shared_ptr<aws::OnServerSocketListener> getOnServerSocketListener(){
-            return onServerSocketListener_;
+        inline std::function<void(std::shared_ptr<aws::Socket> socket)> getOnServerSocketListener(){
+            return onAcceptHandler_;
         }
 
     private:
@@ -44,7 +43,7 @@ namespace aws {
     private:
         boost::asio::io_service ioservice_;
         tcp::acceptor acceptor_;
-        std::shared_ptr<aws::OnServerSocketListener> onServerSocketListener_;
+        std::function<void(std::shared_ptr<aws::Socket> socket)> onAcceptHandler_;
         std::shared_ptr<aws::SocketConnectionManager> connection_manager_;
     };
 

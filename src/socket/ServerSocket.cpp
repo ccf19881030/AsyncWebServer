@@ -38,9 +38,11 @@ void aws::ServerSocket::start() {
 }
 
 void aws::ServerSocket::onAccept(std::shared_ptr<aws::Socket> socket) {
-    if (onServerSocketListener_) {
-        onServerSocketListener_->onAccept(shared_from_this(),socket);
+    if (onAcceptHandler_) {
+        onAcceptHandler_(socket);
     }
+
+
 }
 
 std::shared_ptr<aws::ServerSocket> aws::ServerSocket::create(int port) {

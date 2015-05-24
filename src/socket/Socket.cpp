@@ -6,6 +6,7 @@
 #include "Socket.h"
 
 aws::Socket::~Socket() {
+    std::cout<<"Delete Socket Object\n";
 }
 
 aws::Socket::Socket(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket):running_(true) {
@@ -23,7 +24,7 @@ std::shared_ptr<boost::asio::ip::tcp::socket> aws::Socket::getAsioSocket() {
 }
 
 
-void aws::Socket::async_write(std::shared_ptr<aws::Data> data,
+void aws::Socket::async_write(std::shared_ptr<aws::DataOutput> data,
                               std::function<void(const boost::system::error_code &code, size_t t)> handler) {
     asioSocket_->async_write_some(data->getAsioBuffer(),handler);
 }
@@ -31,6 +32,10 @@ void aws::Socket::async_write(std::shared_ptr<aws::Data> data,
 void aws::Socket::do_receive() {
     asioSocket_->async_read_some(boost::asio::buffer(buffer_),[this](boost::system::error_code error_code, std::size_t bytes_transferred){
         if (!error_code) {
+            if (onReceiveHandler_){
+                onReceiveHandler_(shared_from_this(),buffer_);
+            }
+
             do_receive();
         } else{
             //disconnect
@@ -49,18 +54,18 @@ void aws::Socket::start() {
     do_receive();
 }
 
-void aws::Socket::stop() {
+void aws::Socket::close() {
     asioSocket_->close();
 }
 
 void aws::Socket::onClose() {
-    if (onSocketListener_){
-        onSocketListener_->onClose(shared_from_this());
+    if (onCloseHandler_){
+        onCloseHandler_(shared_from_this());
     }
 }
 
 void aws::Socket::onConnect() {
-    if (onSocketListener_){
-        onSocketListener_->onConnect(shared_from_this());
+    if (onConnectHandler_){
+        onConnectHandler_(shared_from_this());
     }
 }

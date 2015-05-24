@@ -5,9 +5,9 @@
 #pragma once
 
 #include <boost/asio/ip/tcp.hpp>
-#include "Data.h"
+#include "DataOutput.h"
 #include "SocketConnectionManager.h"
-#include "OnSocketListener.h"
+#include "Buffer.h"
 
 namespace aws {
 
@@ -19,6 +19,10 @@ namespace aws {
     friend class ServerSocket;
     friend class SocketConnectionManager;
 
+    public:
+        typedef std::shared_ptr<aws::Socket> SocketPtr;
+        typedef std::function<void(SocketPtr socket,aws::Buffer & buffer)> OnReceiveHandler;
+
     private:
         Socket(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket);
         static std::shared_ptr<aws::Socket> create(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_);
@@ -28,11 +32,37 @@ namespace aws {
 
     public:
         std::shared_ptr<boost::asio::ip::tcp::socket> getAsioSocket();
-        void async_write(std::shared_ptr<aws::Data> data, std::function<void (const boost::system::error_code &code, size_t t)> handler);
+        void async_write(std::shared_ptr<aws::DataOutput> data, std::function<void (const boost::system::error_code &code, size_t t)> handler);
         void start();
-        void stop();
+        void close();
         inline bool isClosed(){
             return !running_;
+        }
+
+    public://set/get functions
+        inline void setConnectionManager(std::shared_ptr<aws::SocketConnectionManager> manager){
+            connection_manager_ = manager;
+        }
+        inline std::shared_ptr<aws::SocketConnectionManager> getConnectionManager(){
+            return connection_manager_;
+        }
+        inline void setOnCloseHandler(std::function<void(std::shared_ptr<aws::Socket> socket)> handler){
+            onCloseHandler_ = handler;
+        }
+        inline std::function<void(std::shared_ptr<aws::Socket> socket)> getOnCloseHandler(){
+            return onCloseHandler_;
+        }
+        inline void setOnConnectHandler(std::function<void(std::shared_ptr<aws::Socket> socket)> handler){
+            onConnectHandler_ = handler;
+        }
+        inline std::function<void(std::shared_ptr<aws::Socket> socket)> getOnConnectHandler(){
+            return onConnectHandler_;
+        }
+        inline void setOnReceiveHandler(OnReceiveHandler handler){
+            onReceiveHandler_ = handler;
+        }
+        inline OnReceiveHandler getOnReceiveHandler(){
+            return onReceiveHandler_;
         }
 
     protected:
@@ -42,18 +72,15 @@ namespace aws {
 
     private:
         void do_receive();
-        inline void setConnectionManager(std::shared_ptr<aws::SocketConnectionManager> manager){
-            connection_manager_ = manager;
-        }
-        inline std::shared_ptr<aws::SocketConnectionManager> getConnectionManager(){
-            return connection_manager_;
-        }
+
 
     private:
         std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_;
-        std::array<char ,1024> buffer_;
+        aws::Buffer buffer_;
         std::shared_ptr<aws::SocketConnectionManager> connection_manager_;
         bool running_;
-        std::shared_ptr<aws::OnSocketListener> onSocketListener_;
+        std::function<void(SocketPtr socket)> onCloseHandler_;
+        std::function<void(SocketPtr socket)> onConnectHandler_;
+        OnReceiveHandler onReceiveHandler_;
     };
 }
