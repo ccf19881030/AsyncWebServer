@@ -21,7 +21,7 @@ namespace aws {
 
     public:
         typedef std::shared_ptr<aws::Socket> SocketPtr;
-        typedef std::function<void(SocketPtr socket,aws::Buffer & buffer)> OnReceiveHandler;
+        typedef std::function<void(SocketPtr socket,aws::InputDataBuffer & buffer,std::size_t bytes_transferred)> OnReceiveHandler;
 
     private:
         Socket(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket);
@@ -76,7 +76,7 @@ namespace aws {
 
     private:
         std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_;
-        aws::Buffer buffer_;
+        aws::InputDataBuffer buffer_;
         std::shared_ptr<aws::SocketConnectionManager> connection_manager_;
         bool running_;
         std::function<void(SocketPtr socket)> onCloseHandler_;

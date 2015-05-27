@@ -8,7 +8,7 @@
 #include <array>
 
 namespace aws{
-    typedef std::array<char ,1024> Buffer;
+    typedef std::array<char ,1024> InputDataBuffer;
 }
 
 #endif //PROJECT_BUFFER_H

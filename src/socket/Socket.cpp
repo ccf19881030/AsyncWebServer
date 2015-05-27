@@ -33,7 +33,7 @@ void aws::Socket::do_receive() {
     asioSocket_->async_read_some(boost::asio::buffer(buffer_),[this](boost::system::error_code error_code, std::size_t bytes_transferred){
         if (!error_code) {
             if (onReceiveHandler_){
-                onReceiveHandler_(shared_from_this(),buffer_);
+                onReceiveHandler_(shared_from_this(),buffer_,bytes_transferred);
             }
 
             do_receive();

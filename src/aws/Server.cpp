@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <HttpFilter.h>
 #include "Server.h"
 
 aws::Server::Server() {
@@ -29,6 +30,7 @@ int aws::Server::getServerPort() {
 void aws::Server::start() {
     if (config_file_loaded_) {
         acceptor_ = std::make_shared<aws::SocketAcceptor>(getServerPort());
+        acceptor_->addFilter(std::make_shared<aws::HttpFilter>());
         acceptor_->start();
     } else{
         std::cerr<<"Please run loadConfig first\n";

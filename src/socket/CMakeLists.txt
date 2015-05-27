@@ -20,4 +20,4 @@ DataInputMessage.cpp
 Buffer.h
 )
 
-add_library(asyncsocket SHARED ${SOURCE_FILES})
+add_library(async_socket SHARED ${SOURCE_FILES})

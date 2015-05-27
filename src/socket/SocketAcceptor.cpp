@@ -14,8 +14,8 @@ aws::SocketAcceptor::SocketAcceptor(int port):server_(aws::ServerSocket::create(
             socket->setOnCloseHandler([this](std::shared_ptr<aws::Socket> sock){
                 first_filter_->onClose(sock);
             });
-            socket->setOnReceiveHandler([this](aws::Socket::SocketPtr sock,std::array<char ,1024> & buffer){
-                std::shared_ptr<aws::DataInputMessage> msg(new aws::DataInputMessage(buffer));
+            socket->setOnReceiveHandler([this](aws::Socket::SocketPtr sock,std::array<char ,1024> & buffer,std::size_t bytes_transferred){
+                std::shared_ptr<aws::DataInputMessage> msg(new aws::DataInputMessage(buffer,bytes_transferred));
                 first_filter_->onReceive(sock,msg);
             });
         }

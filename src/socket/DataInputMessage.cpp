@@ -5,6 +5,7 @@
 #include "DataInputMessage.h"
 
 
-aws::DataInputMessage::DataInputMessage(std::array<char, 1024> &buffer) {
+aws::DataInputMessage::DataInputMessage(aws::InputDataBuffer &buffer, std::size_t bytes_transferred_) {
     buffer_ = buffer;
+    bytes_transferred = bytes_transferred_;
 }
