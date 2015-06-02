@@ -9,7 +9,7 @@ include_directories(
 )
 
 link_directories(/DevRes/Frameworks/boost_1_58_0/stage/lib/static)
-link_libraries(boost_system asyncsocket)
+link_libraries(boost_system async_socket)
 
 set(SOURCE_FILES
 main.cpp

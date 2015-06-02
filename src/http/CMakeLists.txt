@@ -9,10 +9,11 @@ link_directories(/DevRes/Frameworks/boost_1_58_0/stage/lib/static)
 link_libraries(boost_system async_socket)
 
 set(SOURCE_FILES
-header.hpp
+Header.hpp
 HttpFilter.cpp
-request.hpp
-request_parser.cpp
+Request.hpp
+RequestParser.cpp
+Reply.cpp
 )
 
 add_library(aws_http SHARED ${SOURCE_FILES})

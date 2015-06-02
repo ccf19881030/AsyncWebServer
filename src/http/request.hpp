@@ -13,22 +13,20 @@
 
 #include <string>
 #include <vector>
-#include "header.hpp"
+#include "Header.hpp"
 
-namespace http {
-namespace server {
+namespace aws {
 
 /// A request received from a client.
-struct request
+struct Request
 {
   std::string method;
   std::string uri;
   int http_version_major;
   int http_version_minor;
-  std::vector<header> headers;
+  std::vector<Header> headers;
 };
 
-} // namespace server
-} // namespace http
+}
 
 #endif // HTTP_REQUEST_HPP

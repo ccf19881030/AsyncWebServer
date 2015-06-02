@@ -13,44 +13,43 @@
 
 #include <tuple>
 
-namespace http {
-namespace server {
+namespace aws {
 
-struct request;
+struct Request;
 
 /// Parser for incoming requests.
-class request_parser
+class RequestParser
 {
 public:
   /// Construct ready to parse the request method.
-  request_parser();
+  RequestParser();
 
   /// Reset to initial parser state.
   void reset();
 
   /// Result of parse.
-  enum result_type { good, bad, indeterminate };
+  enum ResultType { good, bad, indeterminate };
 
   /// Parse some data. The enum return value is good when a complete request has
   /// been parsed, bad if the data is invalid, indeterminate when more data is
   /// required. The InputIterator return value indicates how much of the input
   /// has been consumed.
   template <typename InputIterator>
-  std::tuple<result_type, InputIterator> parse(request& req,
+  ResultType parse(Request & req,
       InputIterator begin, InputIterator end)
   {
     while (begin != end)
     {
-      result_type result = consume(req, *begin++);
+      ResultType result = consume(req, *begin++);
       if (result == good || result == bad)
-        return std::make_tuple(result, begin);
+        return result;
     }
-    return std::make_tuple(indeterminate, begin);
+    return indeterminate;
   }
 
 private:
   /// Handle the next character of input.
-  result_type consume(request& req, char input);
+  ResultType consume(Request & req, char input);
 
   /// Check if a byte is an HTTP character.
   static bool is_char(int c);
@@ -90,7 +89,6 @@ private:
   } state_;
 };
 
-} // namespace server
-} // namespace http
+}
 
 #endif // HTTP_REQUEST_PARSER_HPP

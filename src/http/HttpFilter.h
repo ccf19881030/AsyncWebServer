@@ -11,11 +11,11 @@ namespace aws {
     class HttpFilter: public aws::Filter {
 
     public:
-        virtual void onAccept(std::shared_ptr<aws::Socket> sock) override;
+        virtual void onAccept(std::shared_ptr<aws::Connection> sock) override;
 
-        virtual void onReceive(std::shared_ptr<aws::Socket> sock, std::shared_ptr<aws::Message> msg) override;
+        virtual void onReceive(std::shared_ptr<aws::Connection> sock, void * msg) override;
 
-        virtual void onClose(std::shared_ptr<aws::Socket> sock) override;
+        virtual void onClose(std::shared_ptr<aws::Connection> sock) override;
     };
 }
 

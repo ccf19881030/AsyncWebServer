@@ -4,19 +4,19 @@
 
 #include <iostream>
 #include "SocketAcceptor.h"
-#include "DataInputMessage.h"
+#include "InputBufferMessage.h"
 
 aws::SocketAcceptor::SocketAcceptor(int port):server_(aws::ServerSocket::create(port)) {
-    server_->setOnAcceptHandler([this](std::shared_ptr<aws::Socket> socket){
+    server_->setOnAcceptHandler([this](std::shared_ptr<aws::Connection> socket){
         if (first_filter_) {
             first_filter_->onAccept(socket);
 
-            socket->setOnCloseHandler([this](std::shared_ptr<aws::Socket> sock){
+            socket->setOnCloseHandler([this](std::shared_ptr<aws::Connection> sock){
                 first_filter_->onClose(sock);
             });
-            socket->setOnReceiveHandler([this](aws::Socket::SocketPtr sock,std::array<char ,1024> & buffer,std::size_t bytes_transferred){
-                std::shared_ptr<aws::DataInputMessage> msg(new aws::DataInputMessage(buffer,bytes_transferred));
-                first_filter_->onReceive(sock,msg);
+            socket->setOnReceiveHandler([this](aws::Connection::ConnectionPtr sock,aws::InputBuffer & buffer,std::size_t bytes_transferred){
+                aws::InputBufferMessage msg(buffer,bytes_transferred);
+                first_filter_->onReceive(sock,&msg);
             });
         }
     });

@@ -3,33 +3,29 @@
 //
 
 #include <iostream>
-#include "Socket.h"
+#include <Log.h>
+#include "Connection.h"
 
-aws::Socket::~Socket() {
-    std::cout<<"Delete Socket Object\n";
+aws::Connection::~Connection() {
+    aws::Log::info("Delete Connection Object");
 }
 
-aws::Socket::Socket(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket):running_(true) {
+aws::Connection::Connection(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket):running_(true) {
     asioSocket_ = asioSocket;
 
     do_receive();
 }
 
-std::shared_ptr<aws::Socket> aws::Socket::create(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_) {
-    return std::shared_ptr<Socket>(new Socket(asioSocket_));
+std::shared_ptr<aws::Connection> aws::Connection::create(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket_) {
+    return std::shared_ptr<Connection>(new Connection(asioSocket_));
 }
 
-std::shared_ptr<boost::asio::ip::tcp::socket> aws::Socket::getAsioSocket() {
+std::shared_ptr<boost::asio::ip::tcp::socket> aws::Connection::getAsioSocket() {
     return asioSocket_;
 }
 
 
-void aws::Socket::async_write(std::shared_ptr<aws::DataOutput> data,
-                              std::function<void(const boost::system::error_code &code, size_t t)> handler) {
-    asioSocket_->async_write_some(data->getAsioBuffer(),handler);
-}
-
-void aws::Socket::do_receive() {
+void aws::Connection::do_receive() {
     asioSocket_->async_read_some(boost::asio::buffer(buffer_),[this](boost::system::error_code error_code, std::size_t bytes_transferred){
         if (!error_code) {
             if (onReceiveHandler_){
@@ -48,23 +44,23 @@ void aws::Socket::do_receive() {
     });
 }
 
-void aws::Socket::start() {
+void aws::Connection::start() {
     running_ = true;
     onConnect();
     do_receive();
 }
 
-void aws::Socket::close() {
+void aws::Connection::close() {
     asioSocket_->close();
 }
 
-void aws::Socket::onClose() {
+void aws::Connection::onClose() {
     if (onCloseHandler_){
         onCloseHandler_(shared_from_this());
     }
 }
 
-void aws::Socket::onConnect() {
+void aws::Connection::onConnect() {
     if (onConnectHandler_){
         onConnectHandler_(shared_from_this());
     }

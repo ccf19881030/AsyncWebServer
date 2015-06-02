@@ -7,17 +7,15 @@
 
 
 #include <memory>
-#include "DataOutput.h"
-#include "Message.h"
 #include "Buffer.h"
 
 namespace aws {
-    class DataInputMessage: public aws::Message {
+    class InputBufferMessage {
     public:
-        DataInputMessage(aws::InputDataBuffer & buffer,std::size_t bytes_transferred);
+        InputBufferMessage(aws::InputBuffer & buffer,std::size_t bytes_transferred);
 
     public:
-        inline aws::InputDataBuffer getBuffer(){
+        inline aws::InputBuffer & getBuffer(){
             return buffer_;
         }
         inline std::size_t getBytesTransferred(){
@@ -26,7 +24,7 @@ namespace aws {
 
 
     private:
-        aws::InputDataBuffer buffer_;
+        aws::InputBuffer buffer_;
         std::size_t bytes_transferred;
     };
 }

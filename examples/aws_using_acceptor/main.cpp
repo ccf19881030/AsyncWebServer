@@ -7,13 +7,13 @@
 #include <vector>
 #include <Filter.h>
 #include <SocketAcceptor.h>
-#include <DataInputMessage.h>
+#include "InputBufferMessage.h"
 
 class HelloWorldFilter:public aws::Filter{
 
 
 public:
-    virtual void onAccept(std::shared_ptr<aws::Socket> sock) override{
+    virtual void onAccept(std::shared_ptr<aws::Connection> sock) override{
         sock->async_write(aws::DataOutput::dataFromString("Hello World\n"),[sock](const boost::system::error_code &code, size_t t){
             if (code){
                 std::cout<<"Fail\n";

@@ -6,8 +6,8 @@
 
 #include <boost/asio/ip/tcp.hpp>
 #include "boost/asio/io_service.hpp"
-#include "Socket.h"
-#include "SocketConnectionManager.h"
+#include "Connection.h"
+#include "ConnectionManager.h"
 
 using boost::asio::ip::tcp;
 
@@ -26,11 +26,11 @@ namespace aws {
 
         void start();
 
-        inline void setOnAcceptHandler(std::function<void(std::shared_ptr<aws::Socket> socket)> listener){
+        inline void setOnAcceptHandler(std::function<void(std::shared_ptr<aws::Connection> socket)> listener){
             onAcceptHandler_ = listener;
         }
 
-        inline std::function<void(std::shared_ptr<aws::Socket> socket)> getOnServerSocketListener(){
+        inline std::function<void(std::shared_ptr<aws::Connection> socket)> getOnAcceptHandler(){
             return onAcceptHandler_;
         }
 
@@ -38,13 +38,13 @@ namespace aws {
         void do_accept();
 
     protected:
-        void onAccept(std::shared_ptr<aws::Socket> socket);
+        void onAccept(std::shared_ptr<aws::Connection> socket);
 
     private:
         boost::asio::io_service ioservice_;
         tcp::acceptor acceptor_;
-        std::function<void(std::shared_ptr<aws::Socket> socket)> onAcceptHandler_;
-        std::shared_ptr<aws::SocketConnectionManager> connection_manager_;
+        std::function<void(std::shared_ptr<aws::Connection> socket)> onAcceptHandler_;
+        std::shared_ptr<aws::ConnectionManager> connection_manager_;
     };
 
 }

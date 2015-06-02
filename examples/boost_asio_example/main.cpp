@@ -7,13 +7,18 @@
 #include <iostream>
 
 using namespace boost::asio::ip;
+typedef std::shared_ptr<boost::asio::io_service> io_service_ptr;
+typedef std::shared_ptr<tcp::acceptor> acceptor_ptr;
+typedef std::shared_ptr<tcp::socket> socket_ptr;
+typedef boost::system::error_code boost_errcode;
 
-void start_accept(std::shared_ptr<boost::asio::io_service> io_service,std::shared_ptr<tcp::acceptor> acceptor){
-    std::shared_ptr<tcp::socket> socket(new tcp::socket(*io_service));
+void start_accept(io_service_ptr io_service,acceptor_ptr acceptor){
 
-    acceptor->async_accept(*socket,[socket,io_service,acceptor](const boost::system::error_code& error){
+    socket_ptr socket(new tcp::socket(*io_service));
+
+    acceptor->async_accept(*socket,[socket,io_service,acceptor](const boost_errcode& error){
         if (!error){
-            socket->async_write_some(boost::asio::buffer("Hello World\n"),[](const boost::system::error_code &code, size_t t){
+            socket->async_write_some(boost::asio::buffer("Hello World\n"),[](const boost_errcode &code, size_t t){
                 std::cout<<"Wrote to client\n";
             });
         }
@@ -24,8 +29,8 @@ void start_accept(std::shared_ptr<boost::asio::io_service> io_service,std::share
 
 
 int main(){
-    std::shared_ptr<boost::asio::io_service> io_service_(new boost::asio::io_service());
-    std::shared_ptr<tcp::acceptor> acceptor_(new tcp::acceptor(*io_service_, tcp::endpoint(tcp::v4(), 6000)));
+    io_service_ptr io_service_(new boost::asio::io_service());
+    acceptor_ptr acceptor_(new tcp::acceptor(*io_service_, tcp::endpoint(tcp::v4(), 6000)));
     start_accept(io_service_,acceptor_);
     io_service_ ->run();
     return 0;

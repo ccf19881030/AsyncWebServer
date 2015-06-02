@@ -49,7 +49,7 @@ namespace http {
           /// Perform an asynchronous write operation.
           void do_write();
 
-          /// Socket for the connection.
+          /// Connection for the connection.
           boost::asio::ip::tcp::socket socket_;
 
           /// The manager for this connection.

@@ -13,16 +13,13 @@
 
 #include <string>
 
-namespace http {
-    namespace server {
-
-        struct header
+namespace aws {
+        struct Header
         {
           std::string name;
           std::string value;
         };
 
-    } // namespace server
-} // namespace http
+}
 
 #endif // HTTP_HEADER_HPP

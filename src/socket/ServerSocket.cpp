@@ -10,7 +10,7 @@
 
 aws::ServerSocket::ServerSocket(int port):
         acceptor_(ioservice_,tcp::endpoint(tcp::v4(),port)),
-        connection_manager_(new aws::SocketConnectionManager()) {
+        connection_manager_(new aws::ConnectionManager()) {
 }
 
 aws::ServerSocket::~ServerSocket() {
@@ -23,7 +23,7 @@ void aws::ServerSocket::do_accept() {
     acceptor_.async_accept(*socket_,[this,socket_](const boost::system::error_code& error){
 
         if (!error) {
-            auto sock_ = aws::Socket::create(socket_);
+            auto sock_ = aws::Connection::create(socket_);
             connection_manager_->add(sock_);
             onAccept(sock_);
         }
@@ -37,7 +37,7 @@ void aws::ServerSocket::start() {
     ioservice_.run();
 }
 
-void aws::ServerSocket::onAccept(std::shared_ptr<aws::Socket> socket) {
+void aws::ServerSocket::onAccept(std::shared_ptr<aws::Connection> socket) {
     if (onAcceptHandler_) {
         onAcceptHandler_(socket);
     }
