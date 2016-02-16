@@ -7,10 +7,13 @@
 #include "Connection.h"
 
 aws::Connection::~Connection() {
-    aws::Log::info("Delete Connection Object");
+    aws::Log::info("Delete Connection");
 }
 
 aws::Connection::Connection(std::shared_ptr<boost::asio::ip::tcp::socket> asioSocket):running_(true) {
+
+    aws::Log::info("Create Connection");
+
     asioSocket_ = asioSocket;
 
     do_receive();

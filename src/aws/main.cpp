@@ -1,10 +1,12 @@
 
 #include <iostream>
+#include <boost/format.hpp>
 #include "Server.h"
 
 
 int main(int argc, char ** argv)
 {
+
     if (argc<2){
         std::cerr<<"Usage:\naws server_config.lua\n";
         return 0;
